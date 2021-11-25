@@ -37,6 +37,8 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using Acme.BookStore.Permissions;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Acme.BookStore.Web
 {
@@ -85,6 +87,13 @@ namespace Acme.BookStore.Web
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
+
+            Configure<RazorPagesOptions>(options =>
+            {
+                options.Conventions.AuthorizePage("/Books/Index", BookStorePermissions.Books.Default);
+                options.Conventions.AuthorizePage("/Books/CreateModal", BookStorePermissions.Books.Create);
+                options.Conventions.AuthorizePage("/Books/EditModal", BookStorePermissions.Books.Edit);
+            });
         }
 
         private void ConfigureUrls(IConfiguration configuration)
@@ -235,5 +244,6 @@ namespace Acme.BookStore.Web
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
         }
+
     }
 }

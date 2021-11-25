@@ -19,6 +19,7 @@
                             [
                                 {
                                     text: l('Edit'),
+                                    visible: abp.auth.isGranted('BookStore.Books.Edit'), //CHECK for the PERMISSION
                                     action: function (data) {
                                         editModal.open({ id: data.record.id });
                                     }
@@ -29,6 +30,7 @@
                                     confirmMessage: function (data) {
                                         return l('BookDeletionConfirmationMessage', data.record.name);
                                     },
+                                    visible: abp.auth.isGranted('BookStore.Books.Delete'),
                                     action: function (data) {
                                         acme.bookStore.books.book
                                             .delete(data.record.id)
